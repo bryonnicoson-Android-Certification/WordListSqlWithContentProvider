@@ -14,6 +14,7 @@ limitations under the License. -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.example.wordlistsqlwithcontentprovider">
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,5 +29,10 @@ limitations under the License. -->
         </activity>
         <activity android:name="com.android.example.wordlistsqlwithcontentprovider.EditWordActivity"></activity>
         <activity android:name="com.android.example.wordlistsqlwithcontentprovider.SearchActivity"></activity>
+
+        <provider
+            android:name=".WordListContentProvider"
+            android:authorities="com.android.example.wordlistsqlwithcontentprovider.provider">
+        </provider>
     </application>
 </manifest>

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -67,29 +68,39 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    public WordItem query(int position) {
-        String query = "SELECT * FROM " + WORD_LIST_TABLE + " ORDER BY " + KEY_WORD +
-                " ASC LIMIT " + position + ", 1";
+    /**
+     * Queries database for entry at given position
+     * @param position The Nth row in the table
+     * @return a cursor with the requested entry
+     */
+
+    public Cursor query(int position) {
+
+        String query;
+        if (position != ALL_ITEMS) {
+            position++;  // because database starts counting at 1
+            query = "SELECT " + KEY_ID + "," + KEY_WORD + " FROM " + WORD_LIST_TABLE +
+                    " WHERE " + KEY_ID + "=" + position + ";";
+        } else {
+            query = "SELECT * FROM " + WORD_LIST_TABLE + " ORDER BY " + KEY_WORD + " ASC ";
+        }
+
         Cursor cursor = null;
         WordItem entry = new WordItem();
+
         try {
-            if (mReadableDB == null) {mReadableDB = getReadableDatabase();}
+            if (mReadableDB == null) {mReadableDB = this.getReadableDatabase();}
             cursor = mReadableDB.rawQuery(query, null);
-            cursor.moveToFirst();
-            entry.setmId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
-            entry.setmWord(cursor.getString(cursor.getColumnIndex(KEY_WORD)));
         } catch (Exception e) {
             Log.d(TAG, "QUERY EXCEPTION! " + e.getMessage());
         } finally {
-            cursor.close();
-            return entry;
+            return cursor;
         }
     }
 
-    public long insert(String word){
+    public long insert(ContentValues values){
         long newId = 0;
-        ContentValues values = new ContentValues();
-        values.put(KEY_WORD, word);
+
         try {
             if (mWritableDB == null){
                 mWritableDB = getWritableDatabase();
@@ -101,11 +112,16 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
         return newId;
     }
 
-    public long count(){
-        if (mReadableDB == null) {
-            mReadableDB = getReadableDatabase();
+    public Cursor count(){
+        MatrixCursor cursor = new MatrixCursor(new String[] { Contract.CONTENT_PATH });
+        try {
+            if (mReadableDB == null) mReadableDB = getReadableDatabase();
+            int count = (int) DatabaseUtils.queryNumEntries(mReadableDB, WORD_LIST_TABLE);
+            cursor.addRow(new Object[]{count});
+        } catch (Exception e) {
+            Log.d(TAG, "EXCEPTION " + e);
         }
-        return DatabaseUtils.queryNumEntries(mReadableDB, WORD_LIST_TABLE);
+        return cursor;
     }
 
     public int delete(int id){

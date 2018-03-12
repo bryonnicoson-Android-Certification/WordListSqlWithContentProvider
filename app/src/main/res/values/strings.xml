@@ -15,8 +15,8 @@ limitations under the License. -->
 
 <resources>
     <string name="app_name">Word List SQL (with Search)</string>
-    <string name="hint_word">Word...</string>
-    <string name="hint_definition">Definition...</string>
+    <string name="hint_word">Word&#8230;</string>
+    <string name="hint_definition">Definition&#8230;</string>
     <string name="button_save">Save</string>
     <string name="button_new">New</string>
     <string name="button_edit">Edit</string>
@@ -24,4 +24,6 @@ limitations under the License. -->
     <string name="empty_not_saved">Word not saved because it is empty.</string>
     <string name="search">Search</string>
     <string name="search_result_prefix">Result for </string>
+    <string name="error_no_word">No matching word found.</string>
+    <string name="not_deleted">Not deleted: </string>
 </resources>
