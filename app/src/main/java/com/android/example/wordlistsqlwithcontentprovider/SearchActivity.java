@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import static com.android.example.wordlistsqlwithcontentprovider.Contract.WordList.KEY_WORD;
+
 /**
  * Created by bryon on 3/11/18.
  */
@@ -39,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
             int index;
             String result;
             do {
-                index = cursor.getColumnIndex(WordListOpenHelper.KEY_WORD);
+                index = cursor.getColumnIndex(KEY_WORD);
                 result = cursor.getString(index);
                 mTextView.append(result + "\n");
             } while (cursor.moveToNext());

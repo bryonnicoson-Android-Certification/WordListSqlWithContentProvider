@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import static com.android.example.wordlistsqlwithcontentprovider.Contract.WordList.*;
+import static com.android.example.wordlistsqlwithcontentprovider.Contract.*;
+
 /**
  * Created by bryon on 3/10/18.
  */
@@ -18,12 +21,7 @@ public class WordListOpenHelper extends SQLiteOpenHelper {
 
     // database, table
     private static final int DATABASE_VERSION = 1;
-    private static final String WORD_LIST_TABLE = "word_entries";
-    private static final String DATABASE_NAME = "wordlist";
 
-    // columns
-    public static final String KEY_ID = "_id";
-    public static final String KEY_WORD = "word";
     private static final String[] COLUMNS = {KEY_ID, KEY_WORD};
 
     // sql query to create table
